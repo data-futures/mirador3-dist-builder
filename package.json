@@ -1,0 +1,21 @@
+{
+  "name": "mirador3-dist",
+  "version": "0.0.1",
+  "description": "Prebuilt, minimal, embeddable Mirador 3 viewer",
+  "private": true,
+  "scripts": {
+    "webpack": "webpack --config webpack/webpack.config.js",
+    "test": "echo \"to do...\" && exit 1"
+  },
+  "author": "Daniel Granville <dan@data-futures.org>",
+  "license": "MIT",
+  "dependencies": {
+    "css-loader": "^3.6.0",
+    "mirador": "^3.3.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
