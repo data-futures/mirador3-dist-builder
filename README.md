@@ -5,6 +5,7 @@ This package provides a prebuilt, minimal Mirador 3 webpack suitable for embbedd
 ## Usage
 
 ```
+nvm use # node v16 recommended
 npm install
 npm run webpack
 ```
