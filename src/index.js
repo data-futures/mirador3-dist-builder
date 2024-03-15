@@ -1,16 +1,18 @@
 import Mirador from 'mirador/dist/es/src/index';
+import annotationPlugins from 'mirador-annotations/es/index';
+import InvenioRDMAdapter from 'mirador-annotations/es/InvenioRDMAdapter';
 
-const params = new URLSearchParams(location.search)
-
-var manifest = params.get('m')
-var canvas = params.get('c')
+const params = new URLSearchParams(location.search);
+var endpointUrl="/api/records";
+var manifest = params.get('m');
+var canvas = params.get('c');
 
 if (manifest && canvas) {
-  console.log ('detected URL params')
+  console.log ('detected URL params');
 } else {
-  console.log ('detected InvenioRDM preview URL')
+  console.log ('detected Invenio preview URL');
 
-  //compute manifest URL from InvenioRDM preview URL
+  //compute manifest URL from Annotot preview URL
   manifest = location.href.split('?')[0]
   manifest=manifest.replace('records/','api/iiif/record:');
   manifest=manifest.replace(/preview.+$/, 'manifest');
@@ -34,6 +36,9 @@ const config = {
   workspaceControlPanel: {
     enabled: false,
   },
+  annotation: {
+    adapter: (canvasId) => new InvenioRDMAdapter(canvasId, endpointUrl)
+  },
   window: {
     allowClose: false,
     allowFullscreen: true,
@@ -44,13 +49,15 @@ const config = {
     defaultSidebarPanelWidth: 235,
     defaultView: 'xsingle',
     hideWindowTitle: true,
-    sideBarOpen: false,
+    sideBarOpen: true,
     switchCanvasOnSearch: false,
+    sideBarPanel: 'annotations',
+    highlightAllAnnotations: true,
     panels: {
       info: true,
       attribution: false,
       canvas: false,
-      annotations: false,
+      annotations: true,
       search: false,
       layers: false,
     },
@@ -67,4 +74,5 @@ const config = {
   }],
 };
 
-Mirador.viewer(config);
+//Mirador.viewer(config);
+Mirador.viewer(config, [...annotationPlugins]);
