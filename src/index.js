@@ -1,26 +1,29 @@
 import Mirador from 'mirador/dist/es/src/index';
 
-const params = new URLSearchParams(location.search)
+function initMirador({ id }) {
+  const params = new URLSearchParams(location.search);
+  var manifest = params.get('m');
+  var canvas = params.get('c');
 
-var manifest = params.get('m')
-var canvas = params.get('c')
-var config = {}
-var annotations = {}
+  const el = document.getElementById(id);
+  let config = {}, annotations = {};
 
-if (manifest && canvas) {
-  console.log ('detected URL params')
-} else {
-  console.log ('detected InvenioRDM preview URL')
-  manifest = document.getElementById('m3-dist').getAttribute('data-manifest');
-  canvas = document.getElementById('m3-dist').getAttribute('data-canvas');
-  config = JSON.parse(document.getElementById('m3-dist').getAttribute('data-config'));
-  annotations = JSON.parse(document.getElementById('m3-dist').getAttribute('data-annotations'));
-}
+  if (manifest && canvas) {
+    console.log('Detected URL params');
+  } else if (el) {
+    console.log('Detected InvenioRDM preview URL');
+    manifest = el.dataset.manifest;
+    canvas = el.dataset.canvas;
+    config = JSON.parse(el.dataset.config || '{}');
+    annotations = JSON.parse(el.dataset.annotations || '{}');
+  } else {
+    console.error('Manifest and canvas not provided.');
+    return;
+  }
 
-  console.log(manifest)
-  console.log(canvas)
+  console.log('Manifest:', manifest);
+  console.log('Canvas:', canvas);
 
-function initMirador({ id, manifest, canvas, config, annotations }) {
   const defaultConfig = {
     workspaceControlPanel: {
       enabled: false,
@@ -30,7 +33,7 @@ function initMirador({ id, manifest, canvas, config, annotations }) {
       allowFullscreen: true,
       allowTopMenuButton: true,
       allowMaximize: false,
-      allowWindowSideBar: true,
+      allowWindowSideBar: false,
       defaultSidebarPanelHeight: 201,
       defaultSidebarPanelWidth: 235,
       defaultView: 'xsingle',
@@ -62,16 +65,12 @@ function initMirador({ id, manifest, canvas, config, annotations }) {
       thumbnailNavigationPosition: "far-bottom",
     }],
     ...defaultConfig,
-    ...(config || {}),
+    ...config,
   };
-  console.log(mergedConfig);
+  console.log('Merged Config:', mergedConfig);
   Mirador.viewer(mergedConfig);
 }
 
 initMirador({
   id: 'm3-dist',
-  manifest: manifest,
-  canvas: canvas,
-  config: config,
-  annotations: annotations
 });
