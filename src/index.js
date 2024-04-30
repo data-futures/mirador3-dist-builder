@@ -8,10 +8,7 @@ function initMirador({ id }) {
   const el = document.getElementById(id);
   let config = {}, annotations = {};
 
-  if (manifest && canvas) {
-    console.log('Detected URL params');
-  } else if (el) {
-    console.log('Detected InvenioRDM preview URL');
+  if (el) {
     manifest = el.dataset.manifest;
     canvas = el.dataset.canvas;
     config = JSON.parse(el.dataset.config || '{}');
@@ -20,9 +17,6 @@ function initMirador({ id }) {
     console.error('Manifest and canvas not provided.');
     return;
   }
-
-  console.log('Manifest:', manifest);
-  console.log('Canvas:', canvas);
 
   const defaultConfig = {
     workspaceControlPanel: {
@@ -36,7 +30,7 @@ function initMirador({ id }) {
       allowWindowSideBar: false,
       defaultSidebarPanelHeight: 201,
       defaultSidebarPanelWidth: 235,
-      defaultView: 'xsingle',
+      defaultView: 'single',
       hideWindowTitle: true,
       sideBarOpen: false,
       switchCanvasOnSearch: false,
@@ -67,7 +61,6 @@ function initMirador({ id }) {
     ...defaultConfig,
     ...config,
   };
-  console.log('Merged Config:', mergedConfig);
   Mirador.viewer(mergedConfig);
 }
 
